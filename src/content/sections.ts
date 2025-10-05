@@ -1,24 +1,25 @@
+interface ActionOptions {
+  requiredCommands?: string[];
+}
+
 export type ActionResult =
-  | { type: "updateText"; lines: string[]; requiredCommands?: string[] }
-  | { type: "updateSection"; section: string; requiredCommands?: string[] };
+  | { type: "updateText"; lines: string[]; options?: ActionOptions }
+  | { type: "updateSection"; section: string; options?: ActionOptions };
 
 interface Section {
   text: string[];
   choices: Record<string, () => ActionResult>;
 }
 
-const updateText = (
-  lines: string[],
-  requiredCommands: string[] = [],
-): ActionResult => {
-  return { type: "updateText", lines, requiredCommands };
+const updateText = (lines: string[], options?: ActionOptions): ActionResult => {
+  return { type: "updateText", lines, options };
 };
 
 const updateSection = (
   section: string,
-  requiredCommands: string[] = [],
+  options?: ActionOptions,
 ): ActionResult => {
-  return { type: "updateSection", section, requiredCommands };
+  return { type: "updateSection", section, options };
 };
 
 const sections: Record<string, Section> = {
@@ -63,7 +64,7 @@ const sections: Record<string, Section> = {
         updateText([
           "Near the edge of the table is your Sony Handycam with its lens cap off already off. You pick it up and turn it on. The screen flickers to life, displaying a grainy view of the room through its lens.",
         ]),
-      window: () => updateSection("outside"),
+      window: () => updateSection("outside", { requiredCommands: ["camera"] }),
     },
   },
   outside: {

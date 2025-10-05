@@ -13,7 +13,7 @@ const Terminal: React.FC = () => {
   const [promptGroups, setLineGroups] = useState<string[][]>([]);
   const [buffer, setBuffer] = useState("");
   const [state, setState] = useState("title");
-  const [cmdHistory, setCmdHistory] = useState<string[]>([]);
+  const [cmdHistory, setCmdHistory] = useState<Command[]>([]);
   const [helpShown, setHelpShown] = useState(true);
 
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -39,15 +39,26 @@ const Terminal: React.FC = () => {
 
   const handleCommand = (cmd: string) => {
     const currentSection = sections[state];
+
     if (!currentSection) return;
 
-    const availableChoices = `commands: [ ${Object.keys(
-      currentSection.choices,
-    ).join(" / ")} ]`;
+    const executedCommands = cmdHistory
+      .filter((h) => h.section === state)
+      .map((h) => h.cmd);
+
+    const availableChoiceKeys = Object.keys(currentSection.choices).filter(
+      (choiceKey) => {
+        const action = currentSection.choices[choiceKey]();
+        const requiredCommands = action.options?.requiredCommands || [];
+        return requiredCommands.every((req) => executedCommands.includes(req));
+      },
+    );
+
+    const availableChoices = `commands: [ ${availableChoiceKeys.join(" / ")} ]`;
 
     if (cmd === "--help") {
       setLineGroups([...promptGroups, [availableChoices]]);
-      setCmdHistory([...cmdHistory, cmd]);
+      setCmdHistory([...cmdHistory, { section: state, cmd }]);
       return;
     }
 
@@ -59,7 +70,7 @@ const Terminal: React.FC = () => {
         [`Auto-help ${helpShown ? "disabled" : "enabled"}.`],
       ]);
 
-      setCmdHistory([...cmdHistory, cmd]);
+      setCmdHistory([...cmdHistory, { section: state, cmd }]);
       return;
     }
 
@@ -73,7 +84,7 @@ const Terminal: React.FC = () => {
           "Type '--help' for a list of commands.",
         ],
       ]);
-      setCmdHistory([...cmdHistory, cmd]);
+      setCmdHistory([...cmdHistory, { section: state, cmd }]);
       return;
     }
 
@@ -82,16 +93,17 @@ const Terminal: React.FC = () => {
     if (result.type === "updateText") {
       // Stay in current section, just show new text
       setLineGroups([...promptGroups, result.lines]);
+      setCmdHistory([...cmdHistory, { section: state, cmd }]);
     } else if (result.type === "updateSection") {
       // Navigate to new section
       const nextSection = sections[result.section];
       if (nextSection) {
         setLineGroups([...promptGroups, nextSection.text]);
+        setCmdHistory([...cmdHistory, { section: state, cmd }]);
+
         setState(result.section);
       }
     }
-
-    setCmdHistory([...cmdHistory, cmd]);
   };
 
   const handleKeyDown = (e: any) => {
@@ -116,14 +128,23 @@ const Terminal: React.FC = () => {
       <Prompts>
         {promptGroups &&
           promptGroups.map((promptGroup, idx) => (
-            <PromptGroup lines={promptGroup} prevCmd={cmdHistory[idx]} />
+            <PromptGroup lines={promptGroup} prevCmd={cmdHistory[idx]?.cmd} />
           ))}
       </Prompts>
       {helpShown && (
         <div className="help-text">
-          <p>{`commands: [ ${Object.keys(sections[state].choices).join(
-            " / ",
-          )} ]`}</p>
+          <p>{`commands: [ ${Object.keys(sections[state].choices)
+            .filter((choiceKey) => {
+              const action = sections[state].choices[choiceKey]();
+              const requiredCommands = action.options?.requiredCommands || [];
+              const executedCommands = cmdHistory
+                .filter((h) => h.section === state)
+                .map((h) => h.cmd);
+              return requiredCommands.every((req) =>
+                executedCommands.includes(req),
+              );
+            })
+            .join(" / ")} ]`}</p>
         </div>
       )}
       <div className="input-line">
