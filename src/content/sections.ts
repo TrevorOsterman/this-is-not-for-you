@@ -112,15 +112,22 @@ const sections: Record<string, Section> = {
           "You turn the knob and pull the door open. It creaks loudly, already echoing into the darkness behind it. The camera in your hand documents every moment with sterile detachment.",
         ]),
       look: () =>
-        updateText([
-          "Beyond the threshold is almost a complete void.",
-          "The light from the living room struggles to make it 20 yards before it quickly dissipates. That's twice as far as you've dared to go.",
-        ]),
+        updateText(
+          [
+            "Beyond the threshold is almost a complete void.",
+            "The light from the living room struggles to make it 20 yards before it quickly dissipates. That's twice as far as you've dared to go.",
+          ],
+          { requiredCommands: ["open"] },
+        ),
       "call out": () =>
-        updateText([
-          "You go to call out, but the sound is choked in your throat. You're not sure you want to hear the answer; confirmation of the depth of the impossibility that lies before you.",
-        ]),
-      retreat: () => updateText(["You're frozen in place."]),
+        updateText(
+          [
+            "You go to call out, but the sound is choked in your throat. You're not sure you want to hear the answer; confirmation of the depth of the impossibility that lies before you.",
+          ],
+          { requiredCommands: ["open"] },
+        ),
+      retreat: () =>
+        updateText(["You're frozen in place."], { requiredCommands: ["open"] }),
       "turn around": () =>
         updateSection("living-room", {
           requiredCommands: ["open", "look", "call out"],
