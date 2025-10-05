@@ -48,6 +48,9 @@ const Terminal: React.FC = () => {
 
     const availableChoiceKeys = Object.keys(currentSection.choices).filter(
       (choiceKey) => {
+        // Filter out already executed commands
+        if (executedCommands.includes(choiceKey)) return false;
+
         const action = currentSection.choices[choiceKey]();
         const requiredCommands = action.options?.requiredCommands || [];
         return requiredCommands.every((req) => executedCommands.includes(req));
@@ -135,11 +138,15 @@ const Terminal: React.FC = () => {
         <div className="help-text">
           <p>{`commands: [ ${Object.keys(sections[state].choices)
             .filter((choiceKey) => {
-              const action = sections[state].choices[choiceKey]();
-              const requiredCommands = action.options?.requiredCommands || [];
               const executedCommands = cmdHistory
                 .filter((h) => h.section === state)
                 .map((h) => h.cmd);
+
+              // Filter out already executed commands
+              if (executedCommands.includes(choiceKey)) return false;
+
+              const action = sections[state].choices[choiceKey]();
+              const requiredCommands = action.options?.requiredCommands || [];
               return requiredCommands.every((req) =>
                 executedCommands.includes(req),
               );

@@ -77,7 +77,6 @@ const sections: Record<string, Section> = {
         updateText([
           "On the street, beyond a large oak tree is Sam's old beater. It's a blue 1998 Ford Taurus with a few dents and scratches, but it still runs. Directly in front of it is your Volkswagen, which rests almost in triumph in contrast.",
         ]),
-      back: () => updateText(["You have more to do."]),
       corner: () =>
         updateText([
           "Leading with your camera, you approach the corner of the house.",
@@ -85,7 +84,8 @@ const sections: Record<string, Section> = {
           "A large swath of lawn stretches out to the west and north until they reach the neighboring houses. There is no hallway. No matter how many times you've seen it, part of you still expects to see one. You want to see one, to make sense of this fever dream you've found yourself in. But it doesn't exist.",
           "At least it's on camera now.",
         ]),
-      "climb back": () => updateSection("house"),
+      "climb back": () =>
+        updateSection("house", { requiredCommands: ["corner"] }),
     },
   },
   house: {
@@ -121,7 +121,10 @@ const sections: Record<string, Section> = {
           "You go to call out, but the sound is choked in your throat. You're not sure you want to hear the answer; confirmation of the depth of the impossibility that lies before you.",
         ]),
       retreat: () => updateText(["You're frozen in place."]),
-      "turn around": () => updateSection("living-room"),
+      "turn around": () =>
+        updateSection("living-room", {
+          requiredCommands: ["open", "look", "call out"],
+        }),
     },
   },
   "living-room": {
