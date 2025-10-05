@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import sections, { GameContext } from "../../sections";
+import sections, { ActionResult } from "../../sections";
 import Title from "../Title/Title";
 import Prompts from "../Prompts/Prompts";
 import LineGroup from "../LineGroup/LineGroup";
@@ -8,12 +8,11 @@ import LineGroup from "../LineGroup/LineGroup";
 import "./Wrapper.styles.css";
 
 const Wrapper: React.FC = () => {
-  const [lines, setLines] = useState<string[]>([]);
+  const [lines, setLines] = useState<string[][]>([]);
 
   const [buffer, setBuffer] = useState("");
   const [state, setState] = useState("intro");
   const [prevCmd, setPrevCmd] = useState("");
-  const [context, setContext] = useState<GameContext>({});
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -31,28 +30,23 @@ const Wrapper: React.FC = () => {
     const currentSection = sections[state];
     if (!currentSection) return;
 
-    const choice = currentSection.choices.find((c) => c.text === cmd);
-    if (!choice) return;
+    const choiceAction = currentSection.choices[cmd];
+    if (!choiceAction) return;
 
-    const nextSection = sections[choice.next];
-    if (!nextSection) return;
+    const result = choiceAction();
 
-    // Update context based on command
-    const newContext = { ...context };
-    if (cmd === "look") {
-      newContext.hasLooked = true;
+    if (result.type === "updateText") {
+      // Stay in current section, just show new text
+      setLines([...lines, [`--- ${cmd} ---`, ...result.lines]]);
+    } else if (result.type === "updateSection") {
+      // Navigate to new section
+      const nextSection = sections[result.section];
+      if (nextSection) {
+        setLines([...lines, [`--- ${cmd} ---`, ...nextSection.text]]);
+        setState(result.section);
+      }
     }
 
-    // Get text (handle both static and dynamic)
-    const text =
-      typeof nextSection.text === "function"
-        ? nextSection.text(newContext)
-        : nextSection.text;
-
-    // Add command input line, then response
-    setLines((prev) => [...prev, ...text]);
-    setState(choice.next);
-    setContext(newContext);
     setPrevCmd(cmd);
   };
 
@@ -80,7 +74,10 @@ const Wrapper: React.FC = () => {
         <p>Type 'start' to begin.</p>
       </div>
       <Prompts>
-        <LineGroup lines={lines} prevCmd={prevCmd} />
+        {lines &&
+          lines.map((lineGroup) => (
+            <LineGroup lines={lineGroup} prevCmd={prevCmd} />
+          ))}
       </Prompts>
       <div className="input-line">
         {`> ${buffer}`}

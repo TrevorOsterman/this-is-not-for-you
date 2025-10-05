@@ -8,8 +8,8 @@ const TitleScreen: React.FC = () => {
       className="title font-mono text-green-400 bg-black p-4 overflow-x-auto text-xs leading-tight"
       style={{
         fontFamily: "monospace",
-        fontSize: "70%", // 50% of the normal font size
-        lineHeight: "1", // optional, to tighten spacing
+        fontSize: "70%",
+        lineHeight: "1",
       }}
     >
       {String.raw`

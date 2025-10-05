@@ -1,45 +1,47 @@
-export interface GameContext {
-  hasLooked?: boolean;
-  visitedRooms?: string[];
-  [key: string]: any;
-}
-
-interface Choice {
-  text: string;
-  next: string;
-}
+export type ActionResult =
+  | { type: "updateText"; lines: string[] }
+  | { type: "updateSection"; section: string };
 
 interface Section {
-  text: string[] | ((context: GameContext) => string[]);
-  choices: Choice[];
-  isEnding?: boolean;
+  text: string[];
+  choices: Record<string, () => ActionResult>;
 }
+
+const updateText = (lines: string[]): ActionResult => {
+  return { type: "updateText", lines };
+};
+
+const updateSection = (section: string): ActionResult => {
+  return { type: "updateSection", section };
+};
 
 const sections: Record<string, Section> = {
   intro: {
     text: [],
-    choices: [{ text: "start", next: "start" }]
+    choices: {
+      start: () => updateSection("start"),
+      quit: () => updateText(["Game over. Refresh to restart."]),
+    },
   },
   start: {
-    text: (ctx) => ctx.hasLooked
-      ? ["You're in a dark room. You sense a door to the north."]
-      : ["You wake up in a dark room."],
-    choices: [
-      { text: "look", next: "start" },
-      { text: "wait", next: "wait" },
-      { text: "shout", next: "shout" }
-    ]
+    text: ["You wake up in a dark room."],
+    choices: {
+      look: () =>
+        updateText(["It's pitch black. You feel a door to the north."]),
+      wait: () => updateText(["Time passes. You hear breathing behind you..."]),
+      shout: () => updateText(["Your voice echoes. Something stirs..."]),
+      ["walk forward"]: () => updateSection("door"),
+      quit: () => updateText(["Game over. Refresh to restart."]),
+    },
   },
-  wait: {
-    text: ["Time passes. You hear breathing behind you..."],
-    choices: [],
-    isEnding: true
+  door: {
+    text: ["An old wooden door stands before you."],
+    choices: {
+      open: () => updateSection("hallway"),
+      knock: () => updateText(["The door doesn't respond."]),
+      back: () => updateSection("start"),
+    },
   },
-  shout: {
-    text: ["Your voice echoes. Something stirs..."],
-    choices: [],
-    isEnding: true
-  }
 };
 
 export default sections;
