@@ -3,15 +3,16 @@ import React, { useState, useEffect, useRef } from "react";
 import sections from "../../sections";
 import Title from "../Title/Title";
 import Prompts from "../Prompts/Prompts";
-import LineGroup from "../Prompts/PromptGroup";
+import PromptGroup from "../Prompts/PromptGroup";
 
 import "./Terminal.styles.css";
 
 const Terminal: React.FC = () => {
-  const [lineGroups, setLineGroups] = useState<string[][]>([]);
+  const [promptGroups, setLineGroups] = useState<string[][]>([]);
   const [buffer, setBuffer] = useState("");
   const [state, setState] = useState("title");
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
+  const [helpShown, setHelpShown] = useState(false);
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +24,7 @@ const Terminal: React.FC = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [lineGroups]);
+  }, [promptGroups]);
 
   useEffect(() => {
     if (sections[state]) {
@@ -36,19 +37,52 @@ const Terminal: React.FC = () => {
     const currentSection = sections[state];
     if (!currentSection) return;
 
+    const availableChoices = `commands: [ ${Object.keys(
+      currentSection.choices,
+    ).join(" / ")} ]`;
+
+    if (cmd === "--help") {
+      setLineGroups([...promptGroups, [availableChoices]]);
+      setCmdHistory([...cmdHistory, cmd]);
+      return;
+    }
+
+    if (cmd === "--auto-help") {
+      setHelpShown(!helpShown);
+
+      setLineGroups([
+        ...promptGroups,
+        [`Auto-help ${helpShown ? "disabled" : "enabled"}.`],
+      ]);
+
+      setCmdHistory([...cmdHistory, cmd]);
+      return;
+    }
+
     const choiceAction = currentSection.choices[cmd];
-    if (!choiceAction) return;
+
+    if (!choiceAction) {
+      setLineGroups([
+        ...promptGroups,
+        [
+          `'${cmd}' is not recognized as a valid command.`,
+          "Type '--help' for a list of commands.",
+        ],
+      ]);
+      setCmdHistory([...cmdHistory, cmd]);
+      return;
+    }
 
     const result = choiceAction();
 
     if (result.type === "updateText") {
       // Stay in current section, just show new text
-      setLineGroups([...lineGroups, result.lines]);
+      setLineGroups([...promptGroups, result.lines]);
     } else if (result.type === "updateSection") {
       // Navigate to new section
       const nextSection = sections[result.section];
       if (nextSection) {
-        setLineGroups([...lineGroups, nextSection.text]);
+        setLineGroups([...promptGroups, nextSection.text]);
         setState(result.section);
       }
     }
@@ -76,11 +110,18 @@ const Terminal: React.FC = () => {
     >
       <Title />
       <Prompts>
-        {lineGroups &&
-          lineGroups.map((lineGroup, idx) => (
-            <LineGroup lines={lineGroup} prevCmd={cmdHistory[idx]} />
+        {promptGroups &&
+          promptGroups.map((promptGroup, idx) => (
+            <PromptGroup lines={promptGroup} prevCmd={cmdHistory[idx]} />
           ))}
       </Prompts>
+      {helpShown && (
+        <div className="help-text">
+          <p>{`commands: [ ${Object.keys(sections[state].choices)
+            .filter((choice) => choice !== cmdHistory[cmdHistory.length - 1])
+            .join(" / ")} ]`}</p>
+        </div>
+      )}
       <div className="input-line">
         {`> ${buffer}`}
         <span className="animate-pulse">_</span>

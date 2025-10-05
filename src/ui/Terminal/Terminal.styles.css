@@ -19,6 +19,14 @@
   justify-content: flex-start;
 }
 
+.help-text {
+  display: flex;
+  font-style: italic;
+  width: 100%;
+  justify-self: flex-start;
+  margin: 5px 0;
+}
+
 @keyframes blink {
   50% {
     opacity: 0;

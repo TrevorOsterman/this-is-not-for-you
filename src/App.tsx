@@ -13,7 +13,7 @@ function App() {
       <div className="center">
         <Divider />
         <Terminal />
-        <Divider text=" [--help: list commands] " />
+        <Divider text=" [ commands: --help: list commands, --auto-help: always list commands ] " />
       </div>
       <Banner mirror />
     </div>

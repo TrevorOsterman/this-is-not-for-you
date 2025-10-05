@@ -20,7 +20,6 @@ const sections: Record<string, Section> = {
     text: ["MS-DOS Adventure v1.0", "Type 'start' to begin."],
     choices: {
       start: () => updateSection("intro"),
-      quit: () => updateText(["Game over. Refresh to restart."]),
     },
   },
   intro: {
@@ -31,7 +30,6 @@ const sections: Record<string, Section> = {
     ],
     choices: {
       begin: () => updateSection("start"),
-      quit: () => updateText(["Game over. Refresh to restart."]),
     },
   },
   start: {
@@ -42,7 +40,6 @@ const sections: Record<string, Section> = {
       wait: () => updateText(["Time passes. You hear breathing behind you..."]),
       shout: () => updateText(["Your voice echoes. Something stirs..."]),
       ["walk forward"]: () => updateSection("door"),
-      quit: () => updateText(["Game over. Refresh to restart."]),
     },
   },
   door: {
