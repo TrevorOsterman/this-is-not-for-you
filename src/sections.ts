@@ -19,14 +19,18 @@ const sections: Record<string, Section> = {
   title: {
     text: ["MS-DOS Adventure v1.0", "Type 'start' to begin."],
     choices: {
-      start: () => updateSection("start"),
+      start: () => updateSection("intro"),
       quit: () => updateText(["Game over. Refresh to restart."]),
     },
   },
   intro: {
-    text: ["Piss.", "And buns."],
+    text: [
+      "This game is a pet-project loosely based on the book 'House of Leaves' by Mark Z. Danielewski, presented in the style of a classic MS-DOS style Choose-Your-Own-Adventure.",
+      "Each section will have commands that you can type to progress the story. If you get stuck, type '--help' to see a list of available commands.",
+      "Type 'begin' to start.",
+    ],
     choices: {
-      start: () => updateSection("start"),
+      begin: () => updateSection("start"),
       quit: () => updateText(["Game over. Refresh to restart."]),
     },
   },

@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   background-color: black;
-    color: hsl(47, 100%, 50%);
+  color: hsl(47, 100%, 50%);
 }
 
 *:focus {
@@ -19,10 +19,6 @@
   animation: blink 1s step-start infinite;
 }
 
-.info-text {
-  position:absolute;
-}
-
 .App {
   display: flex;
   flex-direction: row;
@@ -33,6 +29,6 @@
   height: 100vh;
 }
 
-.app-terminal {
+.center {
   width: 70%;
 }

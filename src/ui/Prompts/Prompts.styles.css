@@ -1,6 +1,22 @@
-.prompts-container {
+.prompts__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.prompts-group__group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 30px;
+  gap: 10px;
+}
+
+.prompts-group__text {
     display: flex;
-    flex-direction: column;
+    width: 70ch;
     justify-content: center;
-    width: 100%;
+    margin: auto;
 }

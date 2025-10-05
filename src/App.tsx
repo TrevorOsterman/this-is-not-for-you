@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App w-screen h-screen bg-black text-green-400 font-mono text-lg p-4 outline-none">
       <Banner />
-      <div className="app-terminal">
+      <div className="center">
         <Divider />
         <Terminal />
         <Divider text=" [--help: list commands] " />
