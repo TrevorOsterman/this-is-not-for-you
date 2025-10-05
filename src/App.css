@@ -21,12 +21,19 @@
 
 .App {
   display: flex;
-  flex-direction: row;
-  background-color: black;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
+  justify-content: center;
+  /* justify-content: space-around; */
+}
+
+.hol-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 50vh;
 }
 
 .center {

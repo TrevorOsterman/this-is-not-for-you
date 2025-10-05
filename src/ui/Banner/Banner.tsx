@@ -20,8 +20,8 @@ const Banner = ({
       <pre className="leaf-banner">{mirroredIcon}</pre>
       <pre className="leaf-banner">{initialIcon}</pre>
       <pre className="leaf-banner">{mirroredIcon}</pre>
-          <pre className="leaf-banner">{initialIcon}</pre>
-                <pre className="leaf-banner">{mirroredIcon}</pre>
+      <pre className="leaf-banner">{initialIcon}</pre>
+      <pre className="leaf-banner">{mirroredIcon}</pre>
     </div>
   );
 };

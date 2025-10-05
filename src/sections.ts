@@ -24,7 +24,7 @@ const sections: Record<string, Section> = {
   },
   intro: {
     text: [
-      "This game is a pet-project loosely based on the book 'House of Leaves' by Mark Z. Danielewski, presented in the style of a classic MS-DOS style Choose-Your-Own-Adventure.",
+      "This game is a pet project loosely based on the book 'House of Leaves' by Mark Z. Danielewski, presented in the style of a classic MS-DOS style Choose-Your-Own-Adventure.",
       "Each section will have commands that you can type to progress the story. If you get stuck, type '--help' to see a list of available commands.",
       "Type 'begin' to start.",
     ],
