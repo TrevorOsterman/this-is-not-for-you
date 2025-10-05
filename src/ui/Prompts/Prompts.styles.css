@@ -16,7 +16,7 @@
 
 .prompts-group__text {
   display: flex;
-  width: 70ch;
+  max-width: 70ch;
   justify-content: center;
   margin: auto;
   text-align: justify;

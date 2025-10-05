@@ -1,25 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import sections from "../../sections";
+import sections from "../../content/sections";
 import Title from "../Title/Title";
 import Prompts from "../Prompts/Prompts";
 import PromptGroup from "../Prompts/PromptGroup";
 
 import "./Terminal.styles.css";
-import hallway from "../../ascii/assets/hallway";
+
+type Command = Record<"section" | "cmd", string>;
 
 const Terminal: React.FC = () => {
   const [promptGroups, setLineGroups] = useState<string[][]>([]);
   const [buffer, setBuffer] = useState("");
   const [state, setState] = useState("title");
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
-  const [helpShown, setHelpShown] = useState(false);
+  const [helpShown, setHelpShown] = useState(true);
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    terminalRef.current?.focus();
-  }, []);
+    if (terminalRef && !terminalRef.current) {
+      terminalRef.current!.focus();
+    }
+  }, [terminalRef]);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -118,9 +121,9 @@ const Terminal: React.FC = () => {
       </Prompts>
       {helpShown && (
         <div className="help-text">
-          <p>{`commands: [ ${Object.keys(sections[state].choices)
-            .filter((choice) => choice !== cmdHistory[cmdHistory.length - 1])
-            .join(" / ")} ]`}</p>
+          <p>{`commands: [ ${Object.keys(sections[state].choices).join(
+            " / ",
+          )} ]`}</p>
         </div>
       )}
       <div className="input-line">
