@@ -1,6 +1,6 @@
 import React from "react";
 
-import { title } from "../ascii";
+import title from "../../ascii/assets/title";
 
 import "./Title.styles.css";
 

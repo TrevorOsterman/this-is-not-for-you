@@ -1,6 +1,0 @@
-.heading {
-position: absolute;  /* or fixed if you want it to stay on scroll */
-  top: 0;              /* at the very top */
-  left: 50%;           /* start at the horizontal center */
-  transform: translateX(-50%); /* shift back by half width */
-}

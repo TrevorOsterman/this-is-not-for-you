@@ -1,27 +1,14 @@
 import React from "react";
 
-import { leaf, mirrorAscii } from "../ascii";
+import { mirrorAscii } from "../../ascii/mirrorAscii";
+import leaf from "../../ascii/assets/leaf";
 
 import "./Banner.styles.css";
 
-const Banner = ({
-  mirror = false,
-  repeats = 5,
-}: {
-  mirror?: boolean;
-  repeats?: number;
-}) => {
-  const initialIcon = mirror ? mirrorAscii(leaf) : leaf;
-  const mirroredIcon = mirrorAscii(initialIcon);
-
+const Banner = ({ mirror = false }: { mirror?: boolean }) => {
   return (
     <div className="leaf-banner-container">
-      <pre className="leaf-banner">{initialIcon}</pre>
-      <pre className="leaf-banner">{mirroredIcon}</pre>
-      <pre className="leaf-banner">{initialIcon}</pre>
-      <pre className="leaf-banner">{mirroredIcon}</pre>
-      <pre className="leaf-banner">{initialIcon}</pre>
-      <pre className="leaf-banner">{mirroredIcon}</pre>
+      <pre className="leaf-banner">{mirror ? mirrorAscii(leaf) : leaf}</pre>
     </div>
   );
 };

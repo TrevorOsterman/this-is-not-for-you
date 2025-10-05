@@ -6,6 +6,7 @@ import Prompts from "../Prompts/Prompts";
 import PromptGroup from "../Prompts/PromptGroup";
 
 import "./Terminal.styles.css";
+import hallway from "../../ascii/assets/hallway";
 
 const Terminal: React.FC = () => {
   const [promptGroups, setLineGroups] = useState<string[][]>([]);

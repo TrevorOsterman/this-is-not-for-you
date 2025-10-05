@@ -17,15 +17,15 @@ const updateSection = (section: string): ActionResult => {
 
 const sections: Record<string, Section> = {
   title: {
-    text: ["MS-DOS Adventure v1.0", "Type 'start' to begin."],
+    text: ["Type 'start' to begin."],
     choices: {
       start: () => updateSection("intro"),
     },
   },
   intro: {
     text: [
-      "This game is a pet project loosely based on the book 'House of Leaves' by Mark Z. Danielewski, presented in the style of a classic MS-DOS style Choose-Your-Own-Adventure.",
-      "Each section will have commands that you can type to progress the story. If you get stuck, type '--help' to see a list of available commands.",
+      "This game is a pet project loosely based on the book 'House of Leaves' by Mark Z. Danielewski, presented in the style of a classic MS-DOS(-ish) style Choose-Your-Own-Adventure.",
+      "Each section will have commands that you can type to progress the story. If you get stuck, type '--help' to see a list of available commands, or type '--auto-help' to always see the list of commands after each input.",
       "Type 'begin' to start.",
     ],
     choices: {

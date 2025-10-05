@@ -10,15 +10,16 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  padding: 10px 30px;
-  gap: 10px;
+  padding: 40px 30px;
+  gap: 15px;
 }
 
 .prompts-group__text {
-    display: flex;
-    width: 70ch;
-    justify-content: center;
-    margin: auto;
+  display: flex;
+  width: 70ch;
+  justify-content: center;
+  margin: auto;
+  text-align: justify;
 }
 
 .prompts-group__previous-command {

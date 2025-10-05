@@ -1,0 +1,6 @@
+export const mirrorAscii = (ascii: string) => {
+  return ascii
+    .split("\n")
+    .map((line: any) => [...line].reverse().join(""))
+    .join("\n");
+};
