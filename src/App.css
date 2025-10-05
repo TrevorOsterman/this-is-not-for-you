@@ -2,18 +2,37 @@
   margin: 0;
   padding: 0;
   background-color: black;
+    color: hsl(47, 100%, 50%);
 }
 
 *:focus {
   outline: none;
 }
 
+.bg-black {
+  background: black;
+}
+.font-mono {
+  font-family: "Courier New", monospace;
+}
+.animate-pulse {
+  animation: blink 1s step-start infinite;
+}
+
+.info-text {
+  position:absolute;
+}
+
 .App {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  display: flex;
+  flex-direction: row;
   background-color: black;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   width: 100vw;
   height: 100vh;
+}
+
+.app-terminal {
+  width: 70%;
 }

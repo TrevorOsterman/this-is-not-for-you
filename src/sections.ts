@@ -16,6 +16,13 @@ const updateSection = (section: string): ActionResult => {
 };
 
 const sections: Record<string, Section> = {
+  title: {
+    text: ["MS-DOS Adventure v1.0", "Type 'start' to begin."],
+    choices: {
+      start: () => updateSection("start"),
+      quit: () => updateText(["Game over. Refresh to restart."]),
+    },
+  },
   intro: {
     text: ["Piss.", "And buns."],
     choices: {

@@ -6,12 +6,12 @@ const LineGroup: React.FC<{ lines: string[]; prevCmd: string }> = ({
 }) => {
   return (
     <>
-      {prevCmd && <div className="previous-command">{`>> ${prevCmd}`}</div>}
       <div className="line-group">
         {lines?.map((line, i) => (
           <div key={i}>{line}</div>
         ))}
       </div>
+      {prevCmd && <div className="previous-command">{`>> ${prevCmd}`}</div>}
     </>
   );
 };

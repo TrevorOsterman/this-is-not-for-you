@@ -10,7 +10,7 @@ import "./Terminal.styles.css";
 const Terminal: React.FC = () => {
   const [lineGroups, setLineGroups] = useState<string[][]>([]);
   const [buffer, setBuffer] = useState("");
-  const [state, setState] = useState("intro");
+  const [state, setState] = useState("title");
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
 
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -24,6 +24,13 @@ const Terminal: React.FC = () => {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [lineGroups]);
+
+  useEffect(() => {
+    if (sections[state]) {
+      setLineGroups([sections[state].text]);
+    }
+    return () => {};
+  }, []);
 
   const handleCommand = (cmd: string) => {
     const currentSection = sections[state];
@@ -65,13 +72,9 @@ const Terminal: React.FC = () => {
       tabIndex={0}
       ref={terminalRef}
       onKeyDown={handleKeyDown}
-      className="wrapper-container"
+      className="terminal-container"
     >
       <Title />
-      <div className="info-text">
-        <p>MS-DOS Adventure v1.0</p>
-        <p>Type 'start' to begin.</p>
-      </div>
       <Prompts>
         {lineGroups &&
           lineGroups.map((lineGroup, idx) => (
