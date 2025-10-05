@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "./ui/Wrapper/Wrapper";
+import Wrapper from "./ui/Terminal/Terminal";
 
 import "./App.css";
 import Banner from "./ui/Banner/Banner";

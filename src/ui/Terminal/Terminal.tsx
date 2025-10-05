@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import sections, { ActionResult } from "../../sections";
+import sections from "../../sections";
 import Title from "../Title/Title";
 import Prompts from "../Prompts/Prompts";
-import LineGroup from "../LineGroup/LineGroup";
+import LineGroup from "../Prompts/PromptGroup";
 
-import "./Wrapper.styles.css";
+import "./Terminal.styles.css";
 
-const Wrapper: React.FC = () => {
-  const [lines, setLines] = useState<string[][]>([]);
-
+const Terminal: React.FC = () => {
+  const [lineGroups, setLineGroups] = useState<string[][]>([]);
   const [buffer, setBuffer] = useState("");
   const [state, setState] = useState("intro");
-  const [prevCmd, setPrevCmd] = useState("");
+  const [cmdHistory, setCmdHistory] = useState<string[]>([]);
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +23,7 @@ const Wrapper: React.FC = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [lines]);
+  }, [lineGroups]);
 
   const handleCommand = (cmd: string) => {
     const currentSection = sections[state];
@@ -37,17 +36,17 @@ const Wrapper: React.FC = () => {
 
     if (result.type === "updateText") {
       // Stay in current section, just show new text
-      setLines([...lines, [`--- ${cmd} ---`, ...result.lines]]);
+      setLineGroups([...lineGroups, result.lines]);
     } else if (result.type === "updateSection") {
       // Navigate to new section
       const nextSection = sections[result.section];
       if (nextSection) {
-        setLines([...lines, [`--- ${cmd} ---`, ...nextSection.text]]);
+        setLineGroups([...lineGroups, nextSection.text]);
         setState(result.section);
       }
     }
 
-    setPrevCmd(cmd);
+    setCmdHistory([...cmdHistory, cmd]);
   };
 
   const handleKeyDown = (e: any) => {
@@ -74,17 +73,17 @@ const Wrapper: React.FC = () => {
         <p>Type 'start' to begin.</p>
       </div>
       <Prompts>
-        {lines &&
-          lines.map((lineGroup) => (
-            <LineGroup lines={lineGroup} prevCmd={prevCmd} />
+        {lineGroups &&
+          lineGroups.map((lineGroup, idx) => (
+            <LineGroup lines={lineGroup} prevCmd={cmdHistory[idx]} />
           ))}
       </Prompts>
       <div className="input-line">
         {`> ${buffer}`}
-        <span className="animate-pulse">█</span>
+        <span className="animate-pulse">_</span>
       </div>
     </div>
   );
 };
 
-export default Wrapper;
+export default Terminal;

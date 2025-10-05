@@ -14,12 +14,11 @@
 .wrapper-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 50vw;
   height: 70vh;
   overflow: auto;
-  padding: 20px;
   scrollbar-width: none; /* For Firefox */
 }
 
@@ -39,6 +38,10 @@
   justify-content: center;
   text-align: center;
   padding: 10px 0;
+}
+
+.previous-command {
+  
 }
 
 @keyframes blink {

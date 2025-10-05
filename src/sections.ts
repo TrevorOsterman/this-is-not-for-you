@@ -17,7 +17,7 @@ const updateSection = (section: string): ActionResult => {
 
 const sections: Record<string, Section> = {
   intro: {
-    text: [],
+    text: ["Piss.", "And buns."],
     choices: {
       start: () => updateSection("start"),
       quit: () => updateText(["Game over. Refresh to restart."]),
