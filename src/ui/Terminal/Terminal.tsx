@@ -150,10 +150,10 @@ const Terminal: React.FC = () => {
                 const action = sections[state].choices[choiceKey]();
                 const requiredCommands = action.options?.requiredCommands || [];
                 return requiredCommands.every((req) =>
-                  executedCommands.includes(req),
+                  executedCommands.includes(req)
                 );
               })
-              .join(" / ")} ]`}</p>
+              .join(' / ')} ]`}</p>
           </div>
         )}
         <div className="input-line">
