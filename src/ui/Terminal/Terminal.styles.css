@@ -1,9 +1,9 @@
 .terminal-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  height: 70vh;
+  justify-content: space-between;
+  padding: 10px 0;
   overflow: auto;
   scrollbar-width: none; /* For Firefox */
 }
@@ -24,6 +24,16 @@
   width: 100%;
   justify-self: flex-start;
   margin: 5px 0;
+}
+
+.terminal-container__input-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 @keyframes blink {

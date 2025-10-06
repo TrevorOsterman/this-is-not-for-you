@@ -2,12 +2,5 @@
     margin: 50px 0;
     display: flex;
     width: auto;
-    font-size: 200%;
-};
-
-@media screen and (max-width: 1000px) {
-    .title {
-        font-size: 100%;
-    }
-    
+    font-size: clamp(0px, 2vw, 20px);
 }

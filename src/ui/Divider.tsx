@@ -57,8 +57,8 @@ const DynamicBorderWithHelp: React.FC<Props> = ({
         fontSize,
         whiteSpace: "nowrap",
         overflow: "hidden",
-          userSelect: "none",
-        padding: "20px 0"
+        userSelect: "none",
+        // padding: "20px 0"
       }}
     >
       {/* hidden measurer */}

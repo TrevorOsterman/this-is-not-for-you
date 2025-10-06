@@ -20,11 +20,16 @@
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   width: 100vw;
   height: 100vh;
-  justify-content: center;
+  overflow: hidden;
+}
+
+.banner-top,
+.banner-bottom {
+  flex-shrink: 0;
 }
 
 .hol-body {
@@ -32,12 +37,22 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  min-height: 50vh;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 70vw;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 80vw;
+  max-width: 1300px;
+  height: 100%;
+  min-height: 0;
+  gap: 0;
+}
+
+@media screen and (min-width: 1000px) {
+  .center {
+    width: 70vw;
+  }
 }

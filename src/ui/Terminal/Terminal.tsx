@@ -134,29 +134,32 @@ const Terminal: React.FC = () => {
             <PromptGroup lines={promptGroup} prevCmd={cmdHistory[idx]?.cmd} />
           ))}
       </Prompts>
-      {helpShown && (
-        <div className="help-text">
-          <p>{`commands: [ ${Object.keys(sections[state].choices)
-            .filter((choiceKey) => {
-              const executedCommands = cmdHistory
-                .filter((h) => h.section === state)
-                .map((h) => h.cmd);
 
-              // Filter out already executed commands
-              if (executedCommands.includes(choiceKey)) return false;
+      <div className="terminal-container__input-area">
+        {helpShown && (
+          <div className="help-text">
+            <p>{`commands: [ ${Object.keys(sections[state].choices)
+              .filter((choiceKey) => {
+                const executedCommands = cmdHistory
+                  .filter((h) => h.section === state)
+                  .map((h) => h.cmd);
 
-              const action = sections[state].choices[choiceKey]();
-              const requiredCommands = action.options?.requiredCommands || [];
-              return requiredCommands.every((req) =>
-                executedCommands.includes(req),
-              );
-            })
-            .join(" / ")} ]`}</p>
+                // Filter out already executed commands
+                if (executedCommands.includes(choiceKey)) return false;
+
+                const action = sections[state].choices[choiceKey]();
+                const requiredCommands = action.options?.requiredCommands || [];
+                return requiredCommands.every((req) =>
+                  executedCommands.includes(req),
+                );
+              })
+              .join(" / ")} ]`}</p>
+          </div>
+        )}
+        <div className="input-line">
+          {`> ${buffer}`}
+          <span className="animate-pulse">_</span>
         </div>
-      )}
-      <div className="input-line">
-        {`> ${buffer}`}
-        <span className="animate-pulse">_</span>
       </div>
     </div>
   );

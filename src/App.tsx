@@ -9,16 +9,19 @@ import "./App.css";
 function App() {
   return (
     <div className="App w-screen h-screen bg-black text-green-400 font-mono text-lg p-4 outline-none">
-      <Banner />
-      {/* === FIX LAYOUT === */}
+      <div className="banner-top">
+        <Banner />
+      </div>
       <div className="hol-body">
         <div className="center">
           <Divider />
           <Terminal />
-          <Divider text=" [ commands: --help: list commands, --auto-help: always list commands ] " />
+          <Divider />
         </div>
       </div>
-      <Banner mirror />
+      <div className="banner-bottom">
+        <Banner mirror />
+      </div>
     </div>
   );
 }
