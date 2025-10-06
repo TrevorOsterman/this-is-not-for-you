@@ -17,12 +17,33 @@ const Terminal: React.FC = () => {
   const [helpShown, setHelpShown] = useState(true);
 
   const terminalRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [cursorPosition, setCursorPosition] = useState(0);
 
   useEffect(() => {
-    if (terminalRef && !terminalRef.current) {
-      terminalRef.current!.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
-  }, [terminalRef]);
+  }, []);
+
+  const handleBlur = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      if (context) {
+        const style = window.getComputedStyle(inputRef.current);
+        context.font = `${style.fontSize} ${style.fontFamily}`;
+        const metrics = context.measureText(buffer);
+        setCursorPosition(metrics.width);
+      }
+    }
+  }, [buffer]);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -109,12 +130,8 @@ const Terminal: React.FC = () => {
     }
   };
 
-  const handleKeyDown = (e: any) => {
-    if (e.key.length === 1) {
-      setBuffer((prev) => prev + e.key);
-    } else if (e.key === "Backspace") {
-      setBuffer((prev) => prev.slice(0, -1));
-    } else if (e.key === "Enter") {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
       handleCommand(buffer.trim().toLowerCase());
       setBuffer("");
     }
@@ -122,9 +139,7 @@ const Terminal: React.FC = () => {
 
   return (
     <div
-      tabIndex={0}
       ref={terminalRef}
-      onKeyDown={handleKeyDown}
       className="terminal-container"
     >
       <Title />
@@ -157,8 +172,23 @@ const Terminal: React.FC = () => {
           </div>
         )}
         <div className="input-line">
-          {`> ${buffer}`}
-          <span className="animate-pulse">_</span>
+          <span className="input-line__prompt">&gt;&nbsp;</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={buffer}
+            onChange={(e) => setBuffer(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+            className="input-line__input"
+            autoComplete="off"
+            spellCheck={false}
+            size={buffer.length || 1}
+          />
+          <span
+            className="input-line__cursor"
+            style={{ left: `calc(2ch + ${cursorPosition}px)` }}
+          >_</span>
         </div>
       </div>
     </div>

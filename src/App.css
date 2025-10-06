@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   background-color: black;
-  color: hsl(47, 100%, 50%);
+  color: hsla(47, 100%, 50%, 0.788);
 }
 
 *:focus {
@@ -13,7 +13,7 @@
   background: black;
 }
 .font-mono {
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
 }
 .animate-pulse {
   animation: blink 1s step-start infinite;

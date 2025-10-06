@@ -16,6 +16,30 @@
   display: flex;
   width: 100%;
   justify-content: flex-start;
+  position: relative;
+}
+
+.input-line__prompt {
+  flex-shrink: 0;
+}
+
+.input-line__input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  caret-color: transparent;
+}
+
+.input-line__cursor {
+  position: absolute;
+  left: 0;
+  animation: blink 1s step-end infinite;
+  pointer-events: none;
 }
 
 .help-text {
